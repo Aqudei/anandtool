@@ -1,0 +1,4 @@
+Key: XXX_
+Object: YYY_
+Schema: ZZZ_YYY_XXX
+Target: newtest
