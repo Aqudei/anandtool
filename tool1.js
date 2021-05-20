@@ -5,7 +5,6 @@ var rimraf = require('rimraf');
 const { on } = require('events');
 var klaw = require('klaw');
 var argv = require('yargs/yargs')(process.argv.slice(2))
-    .demandOption(['c', 'i', 'f'])
     .alias('c', 'config')
     .alias('f', 'function')
     .default('f', 1)
@@ -66,10 +65,10 @@ function doReplace(input, target) {
 
 function main() {
 
-    let config = readConfig(argv.c);
+    let config = readConfig(argv.config);
 
     if (argv.f === 1) {
-        let input = readInput(argv.i);
+        let input = readInput(argv.input);
         let output = {};
         input.forEach(element => {
             let line = element.trim('\r');
@@ -86,7 +85,7 @@ function main() {
 
     if (argv.f === 2) {
         let items = [];
-        klaw(argv.i)
+        klaw(argv.input)
             .on('data', item => items.push(item.path))
             .on('end', () => {
                 console.log(items[0]);
@@ -94,39 +93,37 @@ function main() {
                     const element = items[index];
                     if (element.includes('.git'))
                         continue;
-                    let stats = fs.stat(element, (err, stats) => {
-                        if (!stats.isFile())
-                            return;
-                        // console.log(`Is File: ${stats.isFile()}`);
-                        // console.log(`Is Directory: ${stats.isDirectory()}`);
+                    let stats = fs.statSync(element);
+                    if (!stats.isFile()) {
+                        continue;
+                    }
 
-                        const newName = element.replace(/master/g, config['Target']);
-                        if (!fs.existsSync(path.dirname(newName)))
-                            fs.mkdirSync(path.dirname(newName), { recursive: true });
+                    const newName = element.replace(/master/g, config['Target']);
+                    if (!fs.existsSync(path.dirname(newName)))
+                        fs.mkdirSync(path.dirname(newName), { recursive: true });
 
-                        fs.copyFile(element, newName, err => {
-                            if (err) console.log("Err", err);
-                        });
-                    });
+                    fs.copyFileSync(element, newName);
                 }
-
                 rimraf(argv.input, err => {
                     if (err) {
                         console.error("Err", err);
+                        return;
                     }
+                    doReplace(argv.input, config['Target']);
                 });
-                doReplace(argv.i, config['Target']);
-            }); // => [ ... array of files]
+            });
     }
 
     if (argv.f === 3) {
-        doReplace(argv.i, config['Target']);
+        doReplace(argv.input, config['Target']);
     }
 
     if (argv.f === 4) {
 
     }
 }
+
+
 
 
 main();

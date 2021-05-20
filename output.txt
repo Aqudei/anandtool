@@ -1,0 +1,26 @@
+{
+ "XXX_ABC": {
+  "target": {
+   "object": "YYY_ABC",
+   "schema": "ZZZ_YYY_XXXABC"
+  }
+ },
+ "XXX_DDD": {
+  "target": {
+   "object": "YYY_DDD",
+   "schema": "ZZZ_YYY_XXXDDD"
+  }
+ },
+ "XXX_SSS": {
+  "target": {
+   "object": "YYY_SSS",
+   "schema": "ZZZ_YYY_XXXSSS"
+  }
+ },
+ "XXX_YSIDHS": {
+  "target": {
+   "object": "YYY_YSIDHS",
+   "schema": "ZZZ_YYY_XXXYSIDHS"
+  }
+ }
+}
