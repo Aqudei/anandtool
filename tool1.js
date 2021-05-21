@@ -6,6 +6,7 @@ const { on } = require('events');
 var klaw = require('klaw');
 var argv = require('yargs/yargs')(process.argv.slice(2))
     .alias('c', 'config')
+    .default('c', 'Config.txt')
     .alias('f', 'function')
     .default('f', 1)
     .alias('i', 'input').argv;
