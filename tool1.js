@@ -23,6 +23,8 @@ function readConfig(fConfig) {
             map[tokens[0].trim()] = tokens[1].trim();
         }
     });
+
+    console.log(map);
     return map;
 }
 
