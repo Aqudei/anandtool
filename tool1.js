@@ -126,6 +126,8 @@ function main() {
                         return;
                     }
                     doReplace(argv.input, config['Target']);
+                    let dest = path.join(argv.i.replace(/master/g, config['Target']), `tool_${config['Target']}`, 'resources');
+                    xcopy(config['Resources'], dest);
                 });
             });
     }
