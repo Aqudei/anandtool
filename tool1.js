@@ -2,7 +2,8 @@ var fs = require('fs');
 var os = require('os');
 var path = require('path');
 var rimraf = require('rimraf');
-const { on } = require('events');
+var { on } = require('events');
+var { spawn, spawnSync, exec } = require('child_process');
 var klaw = require('klaw');
 var argv = require('yargs/yargs')(process.argv.slice(2))
     .alias('c', 'config')
@@ -60,8 +61,22 @@ function doReplace(input, target) {
                     })
                 });
             }
-
         });
+}
+
+function xcopy(src, dst) {
+    let folderName = path.basename(src);
+    let finalDest = path.join(dst, folderName);
+    if (!fs.existsSync(finalDest)) {
+        fs.mkdirSync(finalDest);
+    }
+    console.log(`Xcopying ${src} -> ${dst}`);
+    exec(`xcopy \"${src}\" \"${finalDest}\" /Y`, err => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+    });
 }
 
 function main() {
@@ -117,10 +132,9 @@ function main() {
 
     if (argv.f === 3) {
         doReplace(argv.input, config['Target']);
-    }
 
-    if (argv.f === 4) {
-
+        let dest = path.join(argv.i.replace(/master/g, config['Target']), `tool_${config['Target']}`, 'resources');
+        xcopy(config['Resources'], dest);
     }
 }
 
