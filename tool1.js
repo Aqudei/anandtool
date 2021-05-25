@@ -40,7 +40,7 @@ function writeJson(json) {
 }
 
 function doReplace(input, target) {
-    console.log("Replacing file contents");
+    console.log("[Function 3] Replacing file contents");
     let items = [];
     let startdir = input.replace(/master/g, target);
     klaw(startdir)
@@ -71,7 +71,7 @@ function xcopy(src, dst) {
     if (!fs.existsSync(finalDest)) {
         fs.mkdirSync(finalDest);
     }
-    console.log(`Xcopying ${src} -> ${dst}`);
+    console.log(`[Function 4] Xcopying ${src} -> ${dst}`);
     exec(`xcopy \"${src}\" \"${finalDest}\" /Y`, err => {
         if (err) {
             console.log(err);
@@ -85,6 +85,7 @@ function main() {
     let config = readConfig(argv.config);
 
     if (argv.f === 1) {
+        console.log("[Function 1] Generating output.txt")
         let input = readInput(argv.input);
         let output = {};
         input.forEach(element => {
@@ -102,11 +103,10 @@ function main() {
 
     if (argv.f === 2) {
         let items = [];
-        console.log("Renaming folder...");
+        console.log("[Function 2] Renaming folder...");
         klaw(argv.input)
             .on('data', item => items.push(item.path))
             .on('end', () => {
-                console.log(items[0]);
                 for (let index = 0; index < items.length; index++) {
                     const element = items[index];
                     if (element.includes('.git'))
