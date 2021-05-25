@@ -122,6 +122,7 @@ function main() {
 
                     fs.copyFileSync(element, newName);
                 }
+                console.log("[Function 2] Removing old folder...")
                 rimraf(argv.input, err => {
                     if (err) {
                         console.error("Err", err);
