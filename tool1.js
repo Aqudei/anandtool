@@ -40,6 +40,7 @@ function writeJson(json) {
 }
 
 function doReplace(input, target) {
+    console.log("Replacing file contents");
     let items = [];
     let startdir = input.replace(/master/g, target);
     klaw(startdir)
@@ -101,6 +102,7 @@ function main() {
 
     if (argv.f === 2) {
         let items = [];
+        console.log("Renaming folder...");
         klaw(argv.input)
             .on('data', item => items.push(item.path))
             .on('end', () => {
