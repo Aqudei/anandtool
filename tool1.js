@@ -44,7 +44,8 @@ function writeJson(json) {
 function doReplace(input, target) {
     console.log("[Function 3] Replacing file contents");
     let items = [];
-    let startdir = input.replace(/master/g, target);
+    // let startdir = input.replace(/master/g, target);
+    let startdir = input;
     klaw(startdir)
         .on('data', item => items.push(item.path))
         .on('end', () => {
@@ -130,17 +131,21 @@ function main() {
                         console.error("Err", err);
                         return;
                     }
-                    doReplace(argv.input, config['Target']);
-                    let dest = path.join(argv.i.replace(/master/g, config['Target']), `tool_${config['Target']}`, 'resources');
-                    xcopy(config['Resources'], dest);
+
+                    // let target = config['Target'];
+                    // doReplace(argv.input.replace(/master/g, target), target);
+                    // let dest = path.join(argv.i.replace(/master/g, config['Target']), `tool_${config['Target']}`, 'resources');
+                    // xcopy(config['Resources'], dest);
                 });
             });
     }
 
     if (argv.f === 3) {
         doReplace(argv.input, config['Target']);
+    }
 
-        let dest = path.join(argv.i.replace(/master/g, config['Target']), `tool_${config['Target']}`, 'resources');
+    if (argv.f === 4) {
+        let dest = path.join(argv.input, `tool_${config['Target']}`, 'resources');
         xcopy(config['Resources'], dest);
     }
 }
